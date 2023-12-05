@@ -87,6 +87,10 @@ public class Personaje extends JPanel implements ActionListener {
         double initialY = y + height; // Ajustamos la posición inicial de las plataformas
     
         for (int i = 0; i <= platformCount; i++) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> dfeb0811a26decea77486f248bbcd119a205eac4
             plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
             //plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
             plataformas.add(new Plataforma((int)(100*(random.nextDouble()*6.0)), (int)(100*(random.nextDouble()*7.0))));
