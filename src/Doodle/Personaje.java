@@ -1,7 +1,6 @@
 package Doodle;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -16,19 +15,24 @@ public class Personaje extends JPanel implements ActionListener {
 
     private double velocity = 1.0;
     private final double gravity = 0.2;
-    private final double jumpForce = -7; // Agregamos la fuerza de salto
+    private final double jumpForce = -9; // Agregamos la fuerza de salto
 
     private boolean isJumping = false;
     private boolean moveLeft = false;
     private boolean moveRight = false;
 
     private List<Plataforma> plataformas = new ArrayList<>();
-    private final int platformCount = 10;
+    private final int platformCount = 20;
+    private int PlataformasEnPanatalla = 0;
     private double gap;
+    private boolean start = true;
+    private int translateY = 0;
+
+private Timer timer;
 
     public Personaje() {
         x = 200;
-        y = 200 ; // Establecer la posición inicial en la parte inferior del panel
+        y = 500; // Establecer la posición inicial en la parte inferior del panel
 
         Timer timer = new Timer(16, this); // 16ms para aprox. 60fps
         timer.start();
@@ -36,26 +40,17 @@ public class Personaje extends JPanel implements ActionListener {
         generatePlatforms();
 
         setFocusable(true); // Permitir que el panel sea focuseable para las teclas
-        addKeyListener(new KeyAdapter(){
-            
+        addKeyListener(new KeyAdapter() {
+            @Override
             public void keyPressed(KeyEvent e) {
-
-                /** 
-                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    if (!isJumping) {
-                        isJumping = true;
-                        jump();
-                        desplazar(50);
-                    }
-                **/
-
+                
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     moveLeft = true;
                 } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     moveRight = true;
                 }
             }
-            
+
             @Override
             public void keyReleased(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -67,7 +62,27 @@ public class Personaje extends JPanel implements ActionListener {
         });
     }
 
+    private void plataformasInfinitas(){
+        Random random = new Random();
+        int generar = plataformasFueraDePantalla();
+        for (int i = 0; i < generar; i++) {
+            if (PlataformasEnPanatalla <= platformCount){
+                //plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
+                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), (int)(-100*(random.nextDouble()*10.0))));
+                PlataformasEnPanatalla +=1;
+            }
+        }
+    }
     
+    private int plataformasFueraDePantalla(){
+        int generar=0;
+        for (int i = 0; i< plataformas.size(); i++) {
+            if(!plataformas.get(i).getEnPantalla()){
+                generar++;
+            }
+        }
+        return generar;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -89,18 +104,16 @@ public class Personaje extends JPanel implements ActionListener {
         gap = getHeight() / platformCount;
         Random random = new Random();
         double initialY = y + height; // Ajustamos la posición inicial de las plataformas
-    
-        for (int i = 0; i <= platformCount; i++) {
-            plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
-            //plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
-            plataformas.add(new Plataforma((int)(100*(random.nextDouble()*6.0)), (int)(100*(random.nextDouble()*7.0))));
-            //initialY +=50;
+        start = false;
+        plataformas.add(new Plataforma(300, (int)initialY));
+        for (int i = 0; i <= platformCount/2; i++) {
+            plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), (int)(100*(random.nextDouble()*11.0-3.0))));
+            PlataformasEnPanatalla +=1;
         }
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
- 
         if (isJumping) {
             velocity += gravity;
             y += velocity;
@@ -108,12 +121,16 @@ public class Personaje extends JPanel implements ActionListener {
                 y = 500;
                 velocity = 0;
                 isJumping = false;
+                PlataformasEnPanatalla-=10;
+                plataformasInfinitas();
             }
         }
 
         if (!isJumping) {
             isJumping = true;
             jump();
+            desplazar(300,30);
+            PlataformasEnPanatalla-=6;
         }
 
         if (moveLeft) {
@@ -136,36 +153,41 @@ public class Personaje extends JPanel implements ActionListener {
         velocity = jumpForce;
     }
 
-    private void desplazar(int totalTranslateY) { 
-        final int incremento = 2; 
-        
-        Timer timer = new Timer(2, new ActionListener() {
+    private void desplazar(int totalTranslateY, int totalTranslateX) {
+        final int incremento = 10;
+    
+        // Detenemos el temporizador previo si existe
+        if (timer != null && timer.isRunning()) {
+            timer.stop();
+        }
+    
+        timer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int translateY = 0;
-                if(isJumping){
+                if (isJumping) {
                     for (Plataforma plataforma : plataformas) {
-                    plataforma.setT(plataforma.getY() + incremento);
+                        plataforma.setT(plataforma.getY() + incremento);
+                    }
                 }
-                }
-                translateY = translateY + incremento;
+                translateY += incremento;
     
                 if (translateY >= totalTranslateY) {
                     ((Timer) e.getSource()).stop();
+                    translateY = 0; // Reiniciamos la variable para la próxima llamada
                 }
             }
         });
-    
-        timer.start(); // Inicia el temporizador
+        timer.start();
     }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Doodler Game with Swing");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(400, 600);
+            frame.setSize(500, 800);
             frame.add(new Personaje());
             frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
+            //frame.setResizable(false);
         });
     }
 }
