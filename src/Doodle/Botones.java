@@ -91,8 +91,8 @@ class Seleccion extends JFrame implements ActionListener {
 
         ImageIcon fotoBoton = new ImageIcon(getClass().getResource("/images/BadSmily.png"));
         ImageIcon fotoBoton2 = new ImageIcon(getClass().getResource("/images/SmilyL.png"));
-        ImageIcon fotoBoton3 = new ImageIcon(getClass().getResource("/images/boton3.png"));
-        ImageIcon fotoBoton4 = new ImageIcon(getClass().getResource("/images/boton4.png"));
+        ImageIcon fotoBoton3 = new ImageIcon(getClass().getResource("/images/boton4.png"));
+        ImageIcon fotoBoton4 = new ImageIcon(getClass().getResource("/images/boton3.png"));
         ImageIcon fotoBoton5 = new ImageIcon(getClass().getResource("/images/PunkSmily.png"));
         ImageIcon fotoBoton6 = new ImageIcon(getClass().getResource("/images/boton6.png"));
         ImageIcon fotoBoton7 = new ImageIcon(getClass().getResource("/images/botonplay.png"));
@@ -168,36 +168,36 @@ class Seleccion extends JFrame implements ActionListener {
         if (e.getSource() == personaje1) {
             // Lógica para el botón del personaje1
             personajeSeleccionado = "/images/BadSmily.png"; // Reemplazar con la lógica real
-            System.out.println("Personaje seleccionado: " + personajeSeleccionado);
+            //System.out.println("Personaje seleccionado: " + personajeSeleccionado);
         }
         if (e.getSource() == personaje2) {
             // Lógica para el botón del personaje2
             personajeSeleccionado = "/images/Smily.png"; // Reemplazar con la lógica real
-            System.out.println("Personaje seleccionado: " + personajeSeleccionado);
+            //System.out.println("Personaje seleccionado: " + personajeSeleccionado);
         }
         if (e.getSource() == personaje3) {
             // Lógica para el botón del personaje3
             personajeSeleccionado = "/images/PunkSmily.png"; // Reemplazar con la lógica real
-            System.out.println("Personaje seleccionado: " + personajeSeleccionado);
+            //System.out.println("Personaje seleccionado: " + personajeSeleccionado);
         }
         if (e.getSource() == fondo1) {
             // Lógica para el botón del fondo1
             fondoSeleccionado = "/images/fondo.png"; // Reemplazar con la lógica real
-            System.out.println("Fondo seleccionado: " + fondoSeleccionado);
+            //System.out.println("Fondo seleccionado: " + fondoSeleccionado);
         }
         if (e.getSource() == fondo2) {
             // Lógica para el botón del fondo2
             fondoSeleccionado = "/images/fondo2.jpg"; // Reemplazar con la lógica real
-            System.out.println("Fondo seleccionado: " + fondoSeleccionado);
+            //System.out.println("Fondo seleccionado: " + fondoSeleccionado);
         }
         if (e.getSource() == fondo3) {
             // Lógica para el botón del fondo3
             fondoSeleccionado = "/images/fondo3.png"; // Reemplazar con la lógica real
-            System.out.println("Fondo seleccionado: " + fondoSeleccionado);
+           // System.out.println("Fondo seleccionado: " + fondoSeleccionado);
         }
         if (e.getSource() == play) {
             // Lógica para el botón de play
-            System.out.println("Botón Play presionado");
+            //System.out.println("Botón Play presionado");
             
             // Verificar que se hayan seleccionado un personaje y un fondo
             if (personajeSeleccionado != null && fondoSeleccionado != null) {
