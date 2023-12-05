@@ -1,3 +1,5 @@
+package Doodle;
+
 public class Doodle {
     public static void main(String[] args) {
         Botones juego = new Botones();
