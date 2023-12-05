@@ -2,7 +2,7 @@ package Doodle;
 
 import javax.swing.*;
 
-import javafx.application.Platform;
+//import javafx.application.Platform;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -86,9 +86,12 @@ public class Personaje extends JPanel implements ActionListener {
         gap = getHeight() / platformCount;
         Random random = new Random();
         double initialY = y + height; // Ajustamos la posición inicial de las plataformas
-    
+
+        plataformas.add(new Plataforma(300, (int)initialY));
         for (int i = 0; i <= platformCount; i++) {
-            plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
+            //plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
+            plataformas.add(new Plataforma((random.nextInt(6))*100, (random.nextInt(7)-2)*100));
+            //initialY +=50;
         }
     }
     
@@ -128,9 +131,11 @@ public class Personaje extends JPanel implements ActionListener {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Doodler Game with Swing");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(400, 600);
+            frame.setSize(500, 800);
             frame.add(new Personaje());
             frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
+            //frame.setResizable(false);
         });
     }
 }
