@@ -16,7 +16,7 @@ public class Personaje extends JPanel implements ActionListener {
 
     private double velocity = 1.0;
     private final double gravity = 0.2;
-    private final double jumpForce = -9; // Agregamos la fuerza de salto
+    private final double jumpForce = -5; // Agregamos la fuerza de salto
 
     private boolean isJumping = false;
     private boolean moveLeft = false;
@@ -28,7 +28,7 @@ public class Personaje extends JPanel implements ActionListener {
 
     public Personaje() {
         x = 200;
-        y = 500; // Establecer la posición inicial en la parte inferior del panel
+        y = 200 ; // Establecer la posición inicial en la parte inferior del panel
 
         Timer timer = new Timer(16, this); // 16ms para aprox. 60fps
         timer.start();
@@ -36,7 +36,7 @@ public class Personaje extends JPanel implements ActionListener {
         generatePlatforms();
 
         setFocusable(true); // Permitir que el panel sea focuseable para las teclas
-        addKeyListener(new KeyAdapter() {
+        addKeyListener(new KeyAdapter(){
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -87,13 +87,10 @@ public class Personaje extends JPanel implements ActionListener {
         double initialY = y + height; // Ajustamos la posición inicial de las plataformas
     
         for (int i = 0; i <= platformCount; i++) {
-<<<<<<< HEAD
             plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
-=======
             //plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
             plataformas.add(new Plataforma((int)(100*(random.nextDouble()*6.0)), (int)(100*(random.nextDouble()*7.0))));
             //initialY +=50;
->>>>>>> deb01472ba7a3a67031a88d850643023d5f82b48
         }
     }
     
