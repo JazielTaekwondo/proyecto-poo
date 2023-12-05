@@ -16,7 +16,7 @@ public class Personaje extends JPanel implements ActionListener {
 
     private double velocity = 1.0;
     private final double gravity = 0.2;
-    private final double jumpForce = -2; // Agregamos la fuerza de salto
+    private final double jumpForce = -7; // Agregamos la fuerza de salto
 
     private boolean isJumping = false;
     private boolean moveLeft = false;
@@ -37,21 +37,25 @@ public class Personaje extends JPanel implements ActionListener {
 
         setFocusable(true); // Permitir que el panel sea focuseable para las teclas
         addKeyListener(new KeyAdapter(){
-            @Override
+            
             public void keyPressed(KeyEvent e) {
+
+                /** 
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     if (!isJumping) {
                         isJumping = true;
                         jump();
                         desplazar(50);
                     }
-                } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                **/
+
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     moveLeft = true;
                 } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     moveRight = true;
                 }
             }
-
+            
             @Override
             public void keyReleased(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -96,6 +100,7 @@ public class Personaje extends JPanel implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
+ 
         if (isJumping) {
             velocity += gravity;
             y += velocity;
@@ -104,6 +109,11 @@ public class Personaje extends JPanel implements ActionListener {
                 velocity = 0;
                 isJumping = false;
             }
+        }
+
+        if (!isJumping) {
+            isJumping = true;
+            jump();
         }
 
         if (moveLeft) {
