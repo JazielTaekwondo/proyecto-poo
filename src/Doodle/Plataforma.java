@@ -13,6 +13,11 @@ public class Plataforma {
         this.y = y;
     }
 
+    public int getY(){return y;}
+    public void setT(int y){
+        this.y = y;
+    }
+
     public void draw(Graphics g) {
         g.setColor(new Color(100, 255, 100));
         g.fillRect(x, y, width, height);

@@ -22,7 +22,7 @@ public class Personaje extends JPanel implements ActionListener {
     private boolean moveRight = false;
 
     private List<Plataforma> plataformas = new ArrayList<>();
-    private final int platformCount = 6;
+    private final int platformCount = 10;
     private double gap;
 
     public Personaje() {
@@ -42,6 +42,7 @@ public class Personaje extends JPanel implements ActionListener {
                     if (!isJumping) {
                         isJumping = true;
                         jump();
+                        desplazar(30);
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     moveLeft = true;
@@ -87,7 +88,7 @@ public class Personaje extends JPanel implements ActionListener {
         plataformas.add(new Plataforma(300, (int)initialY));
         for (int i = 0; i <= platformCount; i++) {
             //plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
-            plataformas.add(new Plataforma((random.nextInt(6))*100, (random.nextInt(7)-2)*100));
+            plataformas.add(new Plataforma((int)(100*(random.nextDouble()*6.0)), (int)(100*(random.nextDouble()*7.0))));
             //initialY +=50;
         }
     }
@@ -122,6 +123,29 @@ public class Personaje extends JPanel implements ActionListener {
 
     private void jump() {
         velocity = jumpForce;
+    }
+
+    private void desplazar(int totalTranslateY) { 
+        final int incremento = 2; 
+        
+        Timer timer = new Timer(2, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int translateY = 0;
+                if(isJumping){
+                    for (Plataforma plataforma : plataformas) {
+                    plataforma.setT(plataforma.getY() + incremento);
+                }
+                }
+                translateY = translateY + incremento;
+    
+                if (translateY >= totalTranslateY) {
+                    ((Timer) e.getSource()).stop();
+                }
+            }
+        });
+    
+        timer.start(); // Inicia el temporizador
     }
 
     public static void main(String[] args) {
