@@ -16,11 +16,7 @@ public class Personaje extends JPanel implements ActionListener {
     private final double height = 60;
     private final double width = 40;
 
-<<<<<<< HEAD
-    private double velocity = 4;
-=======
     private double velocity = 0.0;
->>>>>>> b744b3a1f08ce2c17451a2ac5eb9dc64c1453081
     private final double gravity = 0.2;
     private final double jumpForce = -9; // Agregamos la fuerza de salto
 
