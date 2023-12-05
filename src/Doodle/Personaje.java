@@ -1,9 +1,6 @@
 package Doodle;
 
 import javax.swing.*;
-
-//import javafx.application.Platform;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
