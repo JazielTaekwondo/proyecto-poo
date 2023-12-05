@@ -132,6 +132,8 @@ class Seleccion extends JFrame implements ActionListener {
         fondo1.addActionListener(this);
         fondo2.addActionListener(this);
         fondo3.addActionListener(this);
+        play.addActionListener(this);
+        menu.addActionListener(this);
 
         ImageIcon icon = new ImageIcon(getClass().getResource("/images/Smily.png"));
         Image iconImage = icon.getImage();
@@ -157,14 +159,62 @@ class Seleccion extends JFrame implements ActionListener {
         setVisible(true);
 
     }
-    public void actionPerformed(ActionEvent e){
-        if(e.getSource()==personaje1){
-            //mostrarSeleccionVentana();
-            this.setVisible(false);
+
+    // Variables para almacenar las selecciones del usuario
+    private String fondoSeleccionado;
+    private String personajeSeleccionado;
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == personaje1) {
+            // Lógica para el botón del personaje1
+            personajeSeleccionado = "/images/BadSmily.png"; // Reemplazar con la lógica real
+            System.out.println("Personaje seleccionado: " + personajeSeleccionado);
         }
         if (e.getSource() == personaje2) {
-            System.exit(0);
+            // Lógica para el botón del personaje2
+            personajeSeleccionado = "/images/Smily.png"; // Reemplazar con la lógica real
+            System.out.println("Personaje seleccionado: " + personajeSeleccionado);
         }
-        
+        if (e.getSource() == personaje3) {
+            // Lógica para el botón del personaje3
+            personajeSeleccionado = "/images/PunkSmily.png"; // Reemplazar con la lógica real
+            System.out.println("Personaje seleccionado: " + personajeSeleccionado);
+        }
+        if (e.getSource() == fondo1) {
+            // Lógica para el botón del fondo1
+            fondoSeleccionado = "/images/fondo.png"; // Reemplazar con la lógica real
+            System.out.println("Fondo seleccionado: " + fondoSeleccionado);
+        }
+        if (e.getSource() == fondo2) {
+            // Lógica para el botón del fondo2
+            fondoSeleccionado = "/images/fondo2.jpg"; // Reemplazar con la lógica real
+            System.out.println("Fondo seleccionado: " + fondoSeleccionado);
+        }
+        if (e.getSource() == fondo3) {
+            // Lógica para el botón del fondo3
+            fondoSeleccionado = "/images/fondo3.png"; // Reemplazar con la lógica real
+            System.out.println("Fondo seleccionado: " + fondoSeleccionado);
+        }
+        if (e.getSource() == play) {
+            // Lógica para el botón de play
+            System.out.println("Botón Play presionado");
+            
+            // Verificar que se hayan seleccionado un personaje y un fondo
+            if (personajeSeleccionado != null && fondoSeleccionado != null) {
+                System.out.println("Creando instancia de Juego con fondo: " + fondoSeleccionado + " y personaje: " + personajeSeleccionado);
+                // Crear una instancia de la clase Juego y pasarle los parámetros
+                Juego juego = new Juego(fondoSeleccionado, personajeSeleccionado);
+
+                // Ocultar la ventana de selección
+                this.setVisible(false);
+            } else {
+                // Mensaje de advertencia si no se han seleccionado ambos
+                JOptionPane.showMessageDialog(this, "Por favor, selecciona un personaje y un fondo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } else if (e.getSource() == menu) {
+            // Lógica para el botón de menu
+            // ...
+        }
+        // ... (otras acciones)
     }
 }
