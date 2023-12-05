@@ -204,7 +204,7 @@ class Seleccion extends JFrame implements ActionListener {
                 System.out.println("Creando instancia de Juego con fondo: " + fondoSeleccionado + " y personaje: " + personajeSeleccionado);
                 // Crear una instancia de la clase Juego y pasarle los parámetros
                 Juego juego = new Juego(fondoSeleccionado, personajeSeleccionado);
-
+                
                 // Ocultar la ventana de selección
                 this.setVisible(false);
             } else {
