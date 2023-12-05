@@ -16,7 +16,7 @@ public class Personaje extends JPanel implements ActionListener {
 
     private double velocity = 1.0;
     private final double gravity = 0.2;
-    private final double jumpForce = -5; // Agregamos la fuerza de salto
+    private final double jumpForce = -2; // Agregamos la fuerza de salto
 
     private boolean isJumping = false;
     private boolean moveLeft = false;
@@ -43,7 +43,7 @@ public class Personaje extends JPanel implements ActionListener {
                     if (!isJumping) {
                         isJumping = true;
                         jump();
-                        desplazar(30);
+                        desplazar(50);
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     moveLeft = true;
@@ -87,10 +87,6 @@ public class Personaje extends JPanel implements ActionListener {
         double initialY = y + height; // Ajustamos la posición inicial de las plataformas
     
         for (int i = 0; i <= platformCount; i++) {
-<<<<<<< HEAD
-=======
-
->>>>>>> dfeb0811a26decea77486f248bbcd119a205eac4
             plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
             //plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
             plataformas.add(new Plataforma((int)(100*(random.nextDouble()*6.0)), (int)(100*(random.nextDouble()*7.0))));
