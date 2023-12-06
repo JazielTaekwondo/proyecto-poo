@@ -150,8 +150,8 @@ private Timer timer;
         if (isJumping) {
             velocity += gravity;
             y += velocity;
-            if (y < 100) { 
-                y = 100;
+            if (y < 200) { 
+                y = 200;
                 velocity = 0;
             }
         }
