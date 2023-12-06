@@ -62,6 +62,38 @@ private Timer timer;
         });
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        if (isJumping) {
+            velocity += gravity;
+            y += velocity;
+        }
+        
+        if (!isJumping) {
+            PlataformasEnPanatalla-=10;
+            plataformasInfinitas();
+            jump();
+        }
+
+        if (moveLeft) {
+            x -= 4;
+            if (x + width < 0) {
+                x = getWidth();
+            }
+        }
+        if (moveRight) {
+            x += 4;
+            if (x > getWidth()) {
+                x = -width;
+            }
+        }
+
+        colisionConPlataforma();
+
+        repaint();
+    }
+
     private void plataformasInfinitas(){
         Random random = new Random();
         int generar = plataformasFueraDePantalla();
@@ -103,7 +135,7 @@ private Timer timer;
     private void generatePlatforms() {
         gap = getHeight() / platformCount;
         Random random = new Random();
-        double initialY = y + height; // Ajustamos la posición inicial de las plataformas
+        double initialY = (y) + height; // Ajustamos la posición inicial de las plataformas
         start = false;
         plataformas.add(new Plataforma(300, (int)initialY));
         for (int i = 0; i <= platformCount/2; i++) {
@@ -111,51 +143,32 @@ private Timer timer;
             PlataformasEnPanatalla +=1;
         }
     }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (isJumping) {
-            velocity += gravity;
-            y += velocity;
-            if (y >= 500) { // Cambiar esto según la posición del suelo
-                y = 500;
-                velocity = 0;
-                isJumping = false;
-                PlataformasEnPanatalla-=10;
-                plataformasInfinitas();
-            }
-        }
-
-        if (!isJumping) {
-            isJumping = true;
-            jump();
-            desplazar(300,30);
-            PlataformasEnPanatalla-=6;
-        }
-
-        if (moveLeft) {
-            x -= 4;
-            if (x + width < 0) {
-                x = getWidth();
-            }
-        }
-        if (moveRight) {
-            x += 4;
-            if (x > getWidth()) {
-                x = -width;
-            }
-        }
-
-        repaint();
-    }
 
     private void jump() {
         velocity = jumpForce;
+        isJumping = true;
+    }
+
+    public void colisionConPlataforma() {
+        for (Plataforma plataforma : plataformas) {
+            if (x < plataforma.getX() + plataforma.getWidth() &&
+                x + width > plataforma.getX() &&
+                y < plataforma.getY() + plataforma.getHeight() &&
+                y + height > plataforma.getY() &&            
+                velocity>=0) 
+            {   
+                if(y+height <=500){
+                    desplazar(300,30);
+                }
+                velocity = 0;
+                jump();
+            }
+        }
     }
 
     private void desplazar(int totalTranslateY, int totalTranslateX) {
         final int incremento = 10;
-    
+        
         // Detenemos el temporizador previo si existe
         if (timer != null && timer.isRunning()) {
             timer.stop();
@@ -178,6 +191,7 @@ private Timer timer;
             }
         });
         timer.start();
+
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -187,7 +201,7 @@ private Timer timer;
             frame.add(new Personaje());
             frame.setVisible(true);
             frame.setLocationRelativeTo(null);
-            //frame.setResizable(false);
+
         });
     }
 }

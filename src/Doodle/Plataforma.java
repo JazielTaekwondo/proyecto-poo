@@ -15,7 +15,13 @@ public class Plataforma {
     }
 
     public int getY(){return y;}
+
     public int getX(){return x;}
+
+    public int getHeight(){return height;}
+
+    public int getWidth(){return width;}
+
     public void setT(int y){
         this.y = y;
     }
