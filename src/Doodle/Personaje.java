@@ -16,7 +16,7 @@ public class Personaje extends JPanel implements ActionListener {
 
     private double velocity = 1.0;
     private final double gravity = 0.2;
-    private final double jumpForce = -9; // Agregamos la fuerza de salto
+    private final double jumpForce = -7; // Agregamos la fuerza de salto
 
     private boolean isJumping = false;
     private boolean moveLeft = false;
@@ -109,26 +109,20 @@ private Timer timer;
 
         colisionConPlataforma();
 
-        while(plataformas.size()>=8){
-            plataformas.remove(0);
-        }
+        eliminar();
 
         repaint();
     }
 
-
-    /** 
-    private void plataformasInfinitas(){
+    private void eliminar(){
         Random random = new Random();
         for (int i = 0; i< plataformas.size(); i++) {
             if(plataformas.get(i).getEnPantalla()==false){
                 plataformas.remove(i);
                 i--;
-                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), (int)(-100*(random.nextDouble()*10.0))));
             }
         }
     }
-    */
     
 
     @Override
@@ -191,17 +185,19 @@ private Timer timer;
                 }
                 velocity = 0;
                 jump();
+                desplazar(300,30);
                 isJumping = false;
             }
         }
         if (move) {
-            for (int i = 0; i < 3; i++) { // Generar tres plataformas en diferentes alturas
+            for (int i = 0; i < 5; i++) { // Generar plataformas en diferentes alturas
                 int newPlatformY = random.nextInt(401); // Establecer una nueva altura aleatoria
                 while (Math.abs(newPlatformY - y) < 150) { // Asegurarse de que la nueva plataforma esté a una distancia mínima del personaje
                     newPlatformY = random.nextInt(401);
                 }
-                plataformas.add(new Plataforma(random.nextInt(401), newPlatformY));
+                plataformas.add(new Plataforma(random.nextInt(401), -newPlatformY));
             }
+            plataformas.add(new Plataforma(random.nextInt(401),-1));
             move = false;
         }
     }
