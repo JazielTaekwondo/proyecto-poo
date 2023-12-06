@@ -22,7 +22,7 @@ public class Personaje extends JPanel implements ActionListener {
     private boolean moveRight = false;
 
     private List<Plataforma> plataformas = new ArrayList<>();
-    private final int platformCount = 20;
+    private final int platformCount = 10;
     private int PlataformasEnPanatalla = 0;
     private double gap;
     private boolean start = true;
@@ -100,7 +100,7 @@ private Timer timer;
         for (int i = 0; i < generar; i++) {
             if (PlataformasEnPanatalla <= platformCount){
                 //plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
-                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), (int)(-100*(random.nextDouble()*10.0))));
+                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), i*(int)(-200*(random.nextDouble()*1.0-2))));
                 PlataformasEnPanatalla +=1;
             }
         }
@@ -138,8 +138,8 @@ private Timer timer;
         double initialY = (y) + height; // Ajustamos la posición inicial de las plataformas
         start = false;
         plataformas.add(new Plataforma(300, (int)initialY));
-        for (int i = 0; i <= platformCount/2; i++) {
-            plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), (int)(100*(random.nextDouble()*11.0-3.0))));
+        for (int i = 0; i <= 8; i++) {
+            plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), (int)(100*(random.nextDouble()*1.0*i))));
             PlataformasEnPanatalla +=1;
         }
     }
@@ -147,6 +147,14 @@ private Timer timer;
     private void jump() {
         velocity = jumpForce;
         isJumping = true;
+        if (isJumping) {
+            velocity += gravity;
+            y += velocity;
+            if (y < 200) { 
+                y = 200;
+                velocity = 0;
+            }
+        }
     }
 
     public void colisionConPlataforma() {
@@ -162,6 +170,7 @@ private Timer timer;
                 }
                 velocity = 0;
                 jump();
+                isJumping = false;
             }
         }
     }
