@@ -16,13 +16,14 @@ public class Personaje extends JPanel implements ActionListener {
 
     private double velocity = 1.0;
     private final double gravity = 0.2;
-    private final double jumpForce = -7; // Agregamos la fuerza de salto
+    private final double jumpForce = -6; // Agregamos la fuerza de salto
 
     private boolean isJumping = false;
     private boolean moveLeft = false;
     private boolean moveRight = false;
 
     private List<Plataforma> plataformas = new ArrayList<>();
+    private int no_plataformas = 0;
 
     /* 
     private final int platformCount = 10;
@@ -44,10 +45,12 @@ private Timer timer;
         timer.start();
 
         //generatePlatforms();
-        plataformas.add(new Plataforma(100,500));
-        plataformas.add(new Plataforma(400,700));
-        plataformas.add(new Plataforma(200,400));
-        plataformas.add(new Plataforma(150,200));
+        plataformas.add(new Plataforma(200,450));
+        plataformas.add(new Plataforma(400,300));
+        plataformas.add(new Plataforma(200,150));
+        plataformas.add(new Plataforma(150,50));
+        plataformas.add(new Plataforma(150,-150));
+        //no_plataformas+=5;
 
         setFocusable(true); // Permitir que el panel sea focuseable para las teclas
         addKeyListener(new KeyAdapter() {
@@ -107,6 +110,12 @@ private Timer timer;
             }
         }
 
+        if (y > 700) {
+            // Si la posición en y supera 700, detener el juego y mostrar un mensaje
+            JOptionPane.showMessageDialog(this, "¡Has perdido!");
+            System.exit(0); // Salir del juego
+        }
+
         colisionConPlataforma();
 
         eliminar();
@@ -115,11 +124,11 @@ private Timer timer;
     }
 
     private void eliminar(){
-        Random random = new Random();
         for (int i = 0; i< plataformas.size(); i++) {
             if(plataformas.get(i).getEnPantalla()==false){
                 plataformas.remove(i);
                 i--;
+                no_plataformas--;
             }
         }
     }
@@ -160,8 +169,8 @@ private Timer timer;
         if (isJumping) {
             velocity += gravity;
             y += velocity;
-            if (y < 0) { 
-                y = 0;
+            if (y < 100) { 
+                y = 100;
                 velocity = 0;
             }
         }
@@ -178,26 +187,22 @@ private Timer timer;
             {   
                 if(y+height <=500){
 
-                    move = desplazar(300,30);
+                    move = desplazar(100,30);
 
-                    desplazar(300,30);
+                    desplazar(100,30);
 
                 }
                 velocity = 0;
                 jump();
-                desplazar(300,30);
                 isJumping = false;
             }
         }
-        if (move) {
-            for (int i = 0; i < 5; i++) { // Generar plataformas en diferentes alturas
-                int newPlatformY = random.nextInt(401); // Establecer una nueva altura aleatoria
-                while (Math.abs(newPlatformY - y) < 150) { // Asegurarse de que la nueva plataforma esté a una distancia mínima del personaje
-                    newPlatformY = random.nextInt(401);
-                }
-                plataformas.add(new Plataforma(random.nextInt(401), -newPlatformY));
+        if (move && no_plataformas < 12) {
+            //eliminar();
+            for (int i = 0; i < 9; i++) { // Generar plataformas en diferentes alturas
+                plataformas.add(new Plataforma(random.nextInt(401)*i, -100*(i+1)));
+                no_plataformas++;
             }
-            plataformas.add(new Plataforma(random.nextInt(401),-1));
             move = false;
         }
     }
