@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
+//import java.util.Random;
 
 public class Personaje extends JPanel implements ActionListener {
     private double x;
@@ -22,11 +23,14 @@ public class Personaje extends JPanel implements ActionListener {
     private boolean moveRight = false;
 
     private List<Plataforma> plataformas = new ArrayList<>();
+    /* 
     private final int platformCount = 10;
     private int PlataformasEnPanatalla = 0;
     private double gap;
     private boolean start = true;
+    */
     private int translateY = 0;
+    private Random random = new Random();
 
 private Timer timer;
 
@@ -37,7 +41,11 @@ private Timer timer;
         Timer timer = new Timer(16, this); // 16ms para aprox. 60fps
         timer.start();
 
-        generatePlatforms();
+        //generatePlatforms();
+        plataformas.add(new Plataforma(100,500));
+        plataformas.add(new Plataforma(400,700));
+        plataformas.add(new Plataforma(200,400));
+        plataformas.add(new Plataforma(150,200));
 
         setFocusable(true); // Permitir que el panel sea focuseable para las teclas
         addKeyListener(new KeyAdapter() {
@@ -64,17 +72,16 @@ private Timer timer;
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         
         if (isJumping) {
             velocity += gravity;
             y += velocity;
-        
+            //plataformasInfinitas();
         }
         
         if (!isJumping) {
-            PlataformasEnPanatalla-=10;
-            plataformasInfinitas();
+            //PlataformasEnPanatalla-=10;
+            //plataformasInfinitas();
             jump();
         }
 
@@ -96,31 +103,19 @@ private Timer timer;
         repaint();
     }
 
+    /** 
     private void plataformasInfinitas(){
         Random random = new Random();
-        int generar = plataformasFueraDePantalla();
-        for (int i = 0; i < generar; i++) {
-            if (PlataformasEnPanatalla <= platformCount){
-                //plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
-<<<<<<< HEAD
-                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*17.0)), (int)(-100*(random.nextDouble()*10.0))));
-=======
-                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), i*(int)(-200*(random.nextDouble()*1.0-2))));
->>>>>>> 3047a340beca6df9d45d04a30e18b325b2c1432c
-                PlataformasEnPanatalla +=1;
-            }
-        }
-    }
-    
-    private int plataformasFueraDePantalla(){
-        int generar=0;
         for (int i = 0; i< plataformas.size(); i++) {
-            if(!plataformas.get(i).getEnPantalla()){
-                generar++;
+            if(plataformas.get(i).getEnPantalla()==false){
+                plataformas.remove(i);
+                i--;
+                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), (int)(-100*(random.nextDouble()*10.0))));
             }
         }
-        return generar;
     }
+    */
+    
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -138,17 +133,18 @@ private Timer timer;
         }
     }
 
+    /* 
     private void generatePlatforms() {
-        gap = getHeight() / platformCount;
         Random random = new Random();
         double initialY = (y) + height; // Ajustamos la posición inicial de las plataformas
-        start = false;
+
         plataformas.add(new Plataforma(300, (int)initialY));
-        for (int i = 0; i <= 8; i++) {
-            plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), (int)(100*(random.nextDouble()*1.0*i))));
-            PlataformasEnPanatalla +=1;
+        for (int i = 0; i <= 20; i++) {
+            plataformas.add(new Plataforma((int)(100*(random.nextDouble()*6.0+1)), (int)(100*(random.nextDouble()*16.0-8.0))));
+
         }
     }
+    */
 
     private void jump() {
         velocity = jumpForce;
@@ -164,6 +160,7 @@ private Timer timer;
     }
 
     public void colisionConPlataforma() {
+        boolean move = false;
         for (Plataforma plataforma : plataformas) {
             if (x < plataforma.getX() + plataforma.getWidth() &&
                 x + width > plataforma.getX() &&
@@ -171,15 +168,21 @@ private Timer timer;
                 y + height > plataforma.getY() &&            
                 velocity>=0) 
             {   
-                desplazar(300);
+                if(y+height <=500){
+                    move = desplazar(300,30);
+                }
                 velocity = 0;
                 jump();
                 isJumping = false;
             }
         }
+        if(move){
+            plataformas.add(new Plataforma(random.nextInt(401),0));
+            move=!move;
+        }
     }
 
-    private void desplazar(int totalTranslateY) {
+    private boolean desplazar(int totalTranslateY, int totalTranslateX) {
         final int incremento = 10;
         
         // Detenemos el temporizador previo si existe
@@ -205,6 +208,7 @@ private Timer timer;
         });
         timer.start();
 
+        return true;
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
