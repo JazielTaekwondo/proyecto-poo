@@ -64,10 +64,12 @@ private Timer timer;
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         
         if (isJumping) {
             velocity += gravity;
             y += velocity;
+        
         }
         
         if (!isJumping) {
@@ -100,7 +102,7 @@ private Timer timer;
         for (int i = 0; i < generar; i++) {
             if (PlataformasEnPanatalla <= platformCount){
                 //plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
-                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), (int)(-100*(random.nextDouble()*10.0))));
+                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*17.0)), (int)(-100*(random.nextDouble()*10.0))));
                 PlataformasEnPanatalla +=1;
             }
         }
@@ -157,16 +159,15 @@ private Timer timer;
                 y + height > plataforma.getY() &&            
                 velocity>=0) 
             {   
-                if(y+height <=500){
-                    desplazar(300,30);
-                }
+                desplazar(300);
                 velocity = 0;
                 jump();
+                isJumping = false;
             }
         }
     }
 
-    private void desplazar(int totalTranslateY, int totalTranslateX) {
+    private void desplazar(int totalTranslateY) {
         final int incremento = 10;
         
         // Detenemos el temporizador previo si existe
