@@ -23,15 +23,14 @@ public class Personaje extends JPanel implements ActionListener {
     private boolean moveRight = false;
 
     private List<Plataforma> plataformas = new ArrayList<>();
-<<<<<<< HEAD
+
     /* 
     private final int platformCount = 10;
     private int PlataformasEnPanatalla = 0;
     private double gap;
     private boolean start = true;
     */
-=======
->>>>>>> 1513f718570c89095802d5232913c49e3ebc317e
+
     private int translateY = 0;
     private Random random = new Random();
 
@@ -79,20 +78,19 @@ private Timer timer;
         if (isJumping) {
             velocity += gravity;
             y += velocity;
-<<<<<<< HEAD
+
             //plataformasInfinitas();
         }
         
         if (!isJumping) {
             //PlataformasEnPanatalla-=10;
             //plataformasInfinitas();
-=======
-            plataformasInfinitas();
+
+            //plataformasInfinitas();
         }
         
         if (!isJumping) {
-            plataformasInfinitas();
->>>>>>> 1513f718570c89095802d5232913c49e3ebc317e
+            //plataformasInfinitas();
             jump();
         }
 
@@ -113,12 +111,9 @@ private Timer timer;
 
         repaint();
     }
-<<<<<<< HEAD
+
 
     /** 
-=======
-    
->>>>>>> 1513f718570c89095802d5232913c49e3ebc317e
     private void plataformasInfinitas(){
         Random random = new Random();
         for (int i = 0; i< plataformas.size(); i++) {
@@ -184,11 +179,11 @@ private Timer timer;
                 velocity>=0) 
             {   
                 if(y+height <=500){
-<<<<<<< HEAD
+
                     move = desplazar(300,30);
-=======
+
                     desplazar(300,30);
->>>>>>> 1513f718570c89095802d5232913c49e3ebc317e
+
                 }
                 velocity = 0;
                 jump();
@@ -201,11 +196,8 @@ private Timer timer;
         }
     }
 
-<<<<<<< HEAD
     private boolean desplazar(int totalTranslateY, int totalTranslateX) {
-=======
-    private void desplazar(int totalTranslateY, int totalTranslateX) {
->>>>>>> 1513f718570c89095802d5232913c49e3ebc317e
+
         final int incremento = 10;
         
         // Detenemos el temporizador previo si existe
