@@ -7,11 +7,12 @@ public class Plataforma {
     private int y;
     private final int height = 15;
     private final int width = 60;
-    private boolean enPantalla = false;
+    private boolean enPantalla;
 
     public Plataforma(int x, int y) {
         this.x = x;
         this.y = y;
+        this.enPantalla=true;
     }
 
     public int getY(){return y;}
@@ -32,10 +33,9 @@ public class Plataforma {
     }
 
     public boolean getEnPantalla(){
-        if(this.y>300 ){
+        if(this.y<=800 ){
             return enPantalla;
         }
-        enPantalla=true;
-        return enPantalla;
+        return false;
     }
 }
