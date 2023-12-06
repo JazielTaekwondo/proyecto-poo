@@ -109,6 +109,10 @@ private Timer timer;
 
         colisionConPlataforma();
 
+        while(plataformas.size()>=8){
+            plataformas.remove(0);
+        }
+
         repaint();
     }
 
@@ -162,8 +166,8 @@ private Timer timer;
         if (isJumping) {
             velocity += gravity;
             y += velocity;
-            if (y < 250) { 
-                y = 250;
+            if (y < 0) { 
+                y = 0;
                 velocity = 0;
             }
         }
@@ -191,7 +195,8 @@ private Timer timer;
             }
         }
         if(move){
-            plataformas.add(new Plataforma(random.nextInt(401),0));
+            plataformas.add(new Plataforma(random.nextInt(401),-1));
+            plataformas.add(new Plataforma(random.nextInt(401),-500));
             move=!move;
         }
     }
