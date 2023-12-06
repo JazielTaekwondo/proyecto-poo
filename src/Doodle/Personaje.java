@@ -194,10 +194,15 @@ private Timer timer;
                 isJumping = false;
             }
         }
-        if(move){
-            plataformas.add(new Plataforma(random.nextInt(401),-1));
-            plataformas.add(new Plataforma(random.nextInt(401),-500));
-            move=!move;
+        if (move) {
+            for (int i = 0; i < 3; i++) { // Generar tres plataformas en diferentes alturas
+                int newPlatformY = random.nextInt(401); // Establecer una nueva altura aleatoria
+                while (Math.abs(newPlatformY - y) < 150) { // Asegurarse de que la nueva plataforma esté a una distancia mínima del personaje
+                    newPlatformY = random.nextInt(401);
+                }
+                plataformas.add(new Plataforma(random.nextInt(401), newPlatformY));
+            }
+            move = false;
         }
     }
 
