@@ -96,7 +96,7 @@ private Timer timer;
             if(plataformas.get(i).getEnPantalla()==false){
                 plataformas.remove(i);
                 i--;
-                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*5.0)), (int)(-100*(random.nextDouble()*10.0))));
+                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), (int)(-100*(random.nextDouble()*10.0))));
             }
         }
     }
