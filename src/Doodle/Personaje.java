@@ -22,10 +22,6 @@ public class Personaje extends JPanel implements ActionListener {
     private boolean moveRight = false;
 
     private List<Plataforma> plataformas = new ArrayList<>();
-    private final int platformCount = 10;
-    private int PlataformasEnPanatalla = 0;
-    private double gap;
-    private boolean start = true;
     private int translateY = 0;
 
 private Timer timer;
@@ -68,10 +64,10 @@ private Timer timer;
         if (isJumping) {
             velocity += gravity;
             y += velocity;
+            plataformasInfinitas();
         }
         
         if (!isJumping) {
-            PlataformasEnPanatalla-=10;
             plataformasInfinitas();
             jump();
         }
@@ -93,27 +89,16 @@ private Timer timer;
 
         repaint();
     }
-
+    
     private void plataformasInfinitas(){
         Random random = new Random();
-        int generar = plataformasFueraDePantalla();
-        for (int i = 0; i < generar; i++) {
-            if (PlataformasEnPanatalla <= platformCount){
-                //plataformas.add(new Plataforma(random.nextInt(Math.max(getWidth() - 60, 1)), (int) (initialY + i * gap)));
-                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), i*(int)(-200*(random.nextDouble()*1.0-2))));
-                PlataformasEnPanatalla +=1;
-            }
-        }
-    }
-    
-    private int plataformasFueraDePantalla(){
-        int generar=0;
         for (int i = 0; i< plataformas.size(); i++) {
-            if(!plataformas.get(i).getEnPantalla()){
-                generar++;
+            if(plataformas.get(i).getEnPantalla()==false){
+                plataformas.remove(i);
+                i--;
+                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*5.0)), (int)(-100*(random.nextDouble()*10.0))));
             }
         }
-        return generar;
     }
 
     @Override
@@ -133,14 +118,13 @@ private Timer timer;
     }
 
     private void generatePlatforms() {
-        gap = getHeight() / platformCount;
         Random random = new Random();
         double initialY = (y) + height; // Ajustamos la posición inicial de las plataformas
-        start = false;
+
         plataformas.add(new Plataforma(300, (int)initialY));
-        for (int i = 0; i <= 8; i++) {
-            plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), (int)(100*(random.nextDouble()*1.0*i))));
-            PlataformasEnPanatalla +=1;
+        for (int i = 0; i <= 20; i++) {
+            plataformas.add(new Plataforma((int)(100*(random.nextDouble()*6.0+1)), (int)(100*(random.nextDouble()*16.0-8.0))));
+
         }
     }
 
@@ -150,8 +134,8 @@ private Timer timer;
         if (isJumping) {
             velocity += gravity;
             y += velocity;
-            if (y < 200) { 
-                y = 200;
+            if (y < 250) { 
+                y = 250;
                 velocity = 0;
             }
         }
