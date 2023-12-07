@@ -3,9 +3,12 @@ package Doodle;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
+import javax.sound.sampled.*;
+
 //import java.util.Random;
 
 public class Personaje extends JPanel implements ActionListener {
@@ -110,6 +113,7 @@ public class Personaje extends JPanel implements ActionListener {
         
         if (!isJumping) { // salto
                 jump();
+                reproducirSalto();
                 solido = false;
         }
 
@@ -128,6 +132,7 @@ public class Personaje extends JPanel implements ActionListener {
 
         if (y > 700) {
             // Si la posición en y supera 700, detener el juego y mostrar un mensaje
+            reproducirSonidoPierde();
             JOptionPane.showMessageDialog(this, "¡Has perdido!\nPuntuación: " + getPuntuacion());
             
             System.exit(0); // Salir del juego
@@ -254,5 +259,33 @@ public class Personaje extends JPanel implements ActionListener {
 
     private void updateScoreLabel() {
         scoreLabel.setText("Puntuación: " + getPuntuacion());
+    }
+
+    private void reproducirSalto() {
+        try {
+            // Cargar el archivo de sonido
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource("/sounds/jump.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+
+            // Reproducir el sonido
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void reproducirSonidoPierde() {
+        try {
+            // Cargar el archivo de sonido
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource("/sounds/pada.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+
+            // Reproducir el sonido
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 }
