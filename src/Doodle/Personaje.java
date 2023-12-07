@@ -16,7 +16,7 @@ public class Personaje extends JPanel implements ActionListener {
 
     private double velocity = 1.0;
     private final double gravity = 0.2;
-    private final double jumpForce = -4.5; // Agregamos la fuerza de salto
+    private final double jumpForce = -6.5; // Agregamos la fuerza de salto
 
     private boolean isJumping = false;
     private boolean moveLeft = false;
@@ -35,6 +35,9 @@ public class Personaje extends JPanel implements ActionListener {
 
     private int translateY = 0;
     private Random random = new Random();
+
+    private JLabel scoreLabel;
+    private int puntuacion = 0;
 
 private Timer timer;
 
@@ -73,6 +76,13 @@ private Timer timer;
                 }
             }
         });
+
+        scoreLabel = new JLabel("Puntuación: 0");
+        scoreLabel.setForeground(Color.WHITE); // Color del texto
+        scoreLabel.setBounds(10, 10, 150, 30); // Posición y tamaño del label
+        add(scoreLabel); // Agrega el label al panel
+
+        updateScoreLabel();
     }
 
     @Override
@@ -113,7 +123,8 @@ private Timer timer;
 
         if (y > 700) {
             // Si la posición en y supera 700, detener el juego y mostrar un mensaje
-            JOptionPane.showMessageDialog(this, "¡Has perdido!");
+            JOptionPane.showMessageDialog(this, "¡Has perdido!\nPuntuación: " + getPuntuacion());
+            
             System.exit(0); // Salir del juego
         }
 
@@ -152,6 +163,8 @@ private Timer timer;
     private void jump() {
         velocity = jumpForce;
         isJumping = true;
+        puntuacion++; // Incrementar la puntuación al saltar
+        updateScoreLabel(); // Actualizar el texto del label
         /*if (isJumping) {
             velocity += gravity;
             y += velocity;
@@ -220,6 +233,15 @@ private Timer timer;
 
         return true;
     }
+
+    public int getPuntuacion() {
+        return puntuacion;
+    }
+
+    private void updateScoreLabel() {
+        scoreLabel.setText("Puntuación: " + getPuntuacion());
+    }
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Doodler Game with Swing");
