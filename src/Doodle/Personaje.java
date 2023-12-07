@@ -130,7 +130,7 @@ public class Personaje extends JPanel implements ActionListener {
             }
         }
 
-        if (y > 700) {
+        if (y > 750) {
             // Si la posición en y supera 700, detener el juego y mostrar un mensaje
             reproducirSonidoPierde();
             JOptionPane.showMessageDialog(this, "¡Has perdido!\nPuntuación: " + getPuntuacion());
