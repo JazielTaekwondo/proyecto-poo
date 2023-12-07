@@ -16,7 +16,7 @@ public class Personaje extends JPanel implements ActionListener {
     private final double width = 60;
 
     private double velocity = 1.0;
-    private final double gravity = 0.2;
+    private final double gravity = 0.3;
     private final double jumpForce = -6.5; // Agregamos la fuerza de salto
 
     private boolean isJumping = false;
@@ -131,8 +131,8 @@ public class Personaje extends JPanel implements ActionListener {
             }
         }
 
-        if (y > 750) {
-            // Si la posición en y supera 700, detener el juego y mostrar un mensaje
+        if (y > 730) {
+            // Si la posición en y supera 730, detener el juego y mostrar un mensaje
             M.reproducirSonido("/sounds/pada.wav");
             JOptionPane.showMessageDialog(this,
             "<html><body style='width: 230px; text-align: center;'>" +
@@ -238,7 +238,7 @@ public class Personaje extends JPanel implements ActionListener {
 
     private void plataformasInfinitas(){
         eliminar();
-        int total = 8-no_plataformas;
+        int total = 6-no_plataformas;
         for (int i = 0; i < total; i++) { // Generar plataformas en diferentes alturas
             plataformas.add(new Plataforma(random.nextInt(401), -100*i));
             no_plataformas++;
