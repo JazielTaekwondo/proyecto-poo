@@ -286,5 +286,10 @@ public class Personaje extends JPanel implements ActionListener {
 
     private void updateScoreLabel() {
         scoreLabel.setText("Puntuación: " + getPuntuacion());
+        scoreLabel.setFont(new Font("Snap ITC", Font.BOLD, 25)); // Cambia la fuente y tamaño
+        scoreLabel.setForeground(Color.BLACK); // Cambia el color del texto
+        scoreLabel.setOpaque(true); // Establece que el JLabel es opaco
+        scoreLabel.setBackground(Color.YELLOW); // Cambia el color de fondo del cuadro
+        scoreLabel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2)); // Agrega un borde
     }
 }
