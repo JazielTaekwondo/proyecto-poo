@@ -42,8 +42,6 @@ public class Plataforma {
     public void draw(Graphics g) {
         Image plataformaImage = plataformaIcon.getImage();
         g.drawImage(plataformaImage, x, y, width, height, null);
-        /*g.setColor(new Color(100, 255, 100));
-        g.fillRect(x, y, width, height);*/
     }
 
     public boolean getEnPantalla(){
@@ -63,7 +61,5 @@ class PlataformaPlus extends Plataforma{
     public void draw(Graphics g) {
         Image plataformaImage = plataformaIcon.getImage();
         g.drawImage(plataformaImage, getX(), getY(), getWidth(), getHeight(), null);
-        /*g.setColor(new Color(100, 255, 100));
-        g.fillRect(x, y, width, height);*/
     }
 }

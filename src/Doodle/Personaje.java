@@ -13,7 +13,7 @@ public class Personaje extends JPanel implements ActionListener {
     private double x;
     private double y;
     private final double height = 60;
-    private final double width = 40;
+    private final double width = 60;
 
     private double velocity = 1.0;
     private final double gravity = 0.2;
@@ -39,6 +39,7 @@ public class Personaje extends JPanel implements ActionListener {
 
     private JLabel scoreLabel;
     private int puntuacion = 0;
+    private PlataformaPlus impulso;
     
     private Timer timer;
 
@@ -46,6 +47,7 @@ public class Personaje extends JPanel implements ActionListener {
         this.personajeSeleccionadoL = personajeSeleccionadoL;
         this.personajeSeleccionadoR = personajeSeleccionadoR;
         this.fondoSeleccionado = fondoSeleccionado;
+        impulso = new PlataformaPlus(random.nextInt(401), -1);
         x = 200;
         y = 500; // Establecer la posición inicial en la parte inferior del panel
 
@@ -182,21 +184,20 @@ public class Personaje extends JPanel implements ActionListener {
         for (Plataforma plataforma : plataformas) {
             plataforma.draw(g2d);
         }
+        impulso.draw(g2d);
     }
 
-    private void jump() {
+   private void jump() {
         velocity = jumpForce;
         isJumping = true;
         puntuacion++; // Incrementar la puntuación al saltar
         updateScoreLabel(); // Actualizar el texto del label
-        /*if (isJumping) {
-            velocity += gravity;
-            y += velocity;
-            if (y < 0) { 
-                y = 0;
-                velocity = 0;
-            }
-        }*/
+    }
+    private void jumpPlus() {
+        velocity = -22.0;
+        isJumping = true;
+        puntuacion+=5; // Incrementar la puntuación al saltar
+        updateScoreLabel(); // Actualizar el texto del label
     }
 
     public void colisionConPlataforma() {
@@ -212,23 +213,38 @@ public class Personaje extends JPanel implements ActionListener {
                 }
                 velocity = 0;
                 jump();
-                desplazar(350,30);
+                desplazar(300);
                 isJumping = false;
             }
         }
+        if (x < impulso.getX() + impulso.getWidth() &&
+                x + width > impulso.getX() &&
+                y < impulso.getY() + impulso.getHeight() &&
+                y + height > impulso.getY() &&            
+                velocity>=0 && y > 100 && solido) 
+            {   
+                velocity = 0;
+                jumpPlus();
+                desplazar(800);
+                isJumping = false;
+            }
         plataformasInfinitas();
     }
 
     private void plataformasInfinitas(){
         eliminar();
-        int total = 9-no_plataformas;
+        int total = 8-no_plataformas;
         for (int i = 0; i < total; i++) { // Generar plataformas en diferentes alturas
             plataformas.add(new Plataforma(random.nextInt(401), -100*i));
             no_plataformas++;
         }
+        if(impulso.getEnPantalla()==false){
+            impulso.setX(random.nextInt(401));
+            impulso.setY(-1000);
+        }
     }
 
-    private boolean desplazar(int totalTranslateY, int totalTranslateX) {
+    private boolean desplazar(int totalTranslateY) {
 
         final int incremento = 10;
         
@@ -237,14 +253,15 @@ public class Personaje extends JPanel implements ActionListener {
             timer.stop();
         }
     
-        timer = new Timer(16, new ActionListener() {
+        timer = new Timer(12, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (isJumping) {
                     for (Plataforma plataforma : plataformas) {
-                        plataforma.setT(plataforma.getY() + incremento);
+                        plataforma.setY(plataforma.getY() + incremento);
                     }
                 }
+                impulso.setY(impulso.getY()+incremento);
                 translateY += incremento;
     
                 if (translateY >= totalTranslateY) {
@@ -265,35 +282,4 @@ public class Personaje extends JPanel implements ActionListener {
     private void updateScoreLabel() {
         scoreLabel.setText("Puntuación: " + getPuntuacion());
     }
-
-    /* 
-
-    private void reproducirSalto() {
-        try {
-            // Cargar el archivo de sonido
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource("/sounds/jump.wav"));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-
-            // Reproducir el sonido
-            clip.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void reproducirSonidoPierde() {
-        try {
-            // Cargar el archivo de sonido
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource("/sounds/pada.wav"));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-
-            // Reproducir el sonido
-            clip.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
-    */
 }
