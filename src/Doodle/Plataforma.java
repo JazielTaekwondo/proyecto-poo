@@ -6,8 +6,6 @@ import javax.swing.ImageIcon;
 
 //import javax.swing.JFrame;
 
-
-
 public class Plataforma {
     private int x;
     private int y;
@@ -33,8 +31,12 @@ public class Plataforma {
 
     public int getWidth(){return width;}
 
-    public void setT(int y){
+    public void setY(int y){
         this.y = y;
+    }
+
+    public void setX(int x){
+        this.x = x;
     }
 
     public void draw(Graphics g) {
@@ -49,5 +51,19 @@ public class Plataforma {
             return enPantalla;
         }
         return false;
+    }
+}
+
+class PlataformaPlus extends Plataforma{
+    private ImageIcon plataformaIcon;
+    public PlataformaPlus(int x, int y){
+        super(x, y);
+        plataformaIcon = new ImageIcon(getClass().getResource("/images/impulso.png"));
+    }
+    public void draw(Graphics g) {
+        Image plataformaImage = plataformaIcon.getImage();
+        g.drawImage(plataformaImage, getX(), getY(), getWidth(), getHeight(), null);
+        /*g.setColor(new Color(100, 255, 100));
+        g.fillRect(x, y, width, height);*/
     }
 }

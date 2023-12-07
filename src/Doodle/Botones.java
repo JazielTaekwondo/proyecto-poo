@@ -89,11 +89,11 @@ class Seleccion extends JFrame implements ActionListener {
         menu = new JButton();
         
 
-        ImageIcon fotoBoton = new ImageIcon(getClass().getResource("/images/BadSmilyR.png"));
+        ImageIcon fotoBoton = new ImageIcon(getClass().getResource("/images/BadSmily.png"));
         ImageIcon fotoBoton2 = new ImageIcon(getClass().getResource("/images/SmilyL.png"));
         ImageIcon fotoBoton3 = new ImageIcon(getClass().getResource("/images/boton4.png"));
         ImageIcon fotoBoton4 = new ImageIcon(getClass().getResource("/images/boton3.png"));
-        ImageIcon fotoBoton5 = new ImageIcon(getClass().getResource("/images/PunkSmilyR.png"));
+        ImageIcon fotoBoton5 = new ImageIcon(getClass().getResource("/images/PunkSmily.png"));
         ImageIcon fotoBoton6 = new ImageIcon(getClass().getResource("/images/boton6.png"));
         ImageIcon fotoBoton7 = new ImageIcon(getClass().getResource("/images/botonplay.png"));
         ImageIcon fotoBoton8 = new ImageIcon(getClass().getResource("/images/botonmenu.png"));
@@ -162,26 +162,22 @@ class Seleccion extends JFrame implements ActionListener {
 
     // Variables para almacenar las selecciones del usuario
     private String fondoSeleccionado;
-    private String personajeSeleccionadoL;
-    private String personajeSeleccionadoR;
+    private String personajeSeleccionado;
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == personaje1) {
             // Lógica para el botón del personaje1
-            personajeSeleccionadoL = "/images/BadSmilyL.png"; // Reemplazar con la lógica real
-            personajeSeleccionadoR = "/images/BadSmilyR.png";
+            personajeSeleccionado = "/images/BadSmily.png"; // Reemplazar con la lógica real
             //System.out.println("Personaje seleccionado: " + personajeSeleccionado);
         }
         if (e.getSource() == personaje2) {
             // Lógica para el botón del personaje2
-            personajeSeleccionadoL = "/images/SmilyL.png"; // Reemplazar con la lógica real
-            personajeSeleccionadoR = "/images/SmilyR.png";
+            personajeSeleccionado = "/images/Smily.png"; // Reemplazar con la lógica real
             //System.out.println("Personaje seleccionado: " + personajeSeleccionado);
         }
         if (e.getSource() == personaje3) {
             // Lógica para el botón del personaje3
-            personajeSeleccionadoL = "/images/PunkSmilyL.png"; // Reemplazar con la lógica real
-            personajeSeleccionadoR = "/images/PunkSmilyR.png"; // Reemplazar con la lógica real
+            personajeSeleccionado = "/images/PunkSmily.png"; // Reemplazar con la lógica real
             //System.out.println("Personaje seleccionado: " + personajeSeleccionado);
         }
         if (e.getSource() == fondo1) {
@@ -204,9 +200,9 @@ class Seleccion extends JFrame implements ActionListener {
             //System.out.println("Botón Play presionado");
             
             // Verificar que se hayan seleccionado un personaje y un fondo
-            if (personajeSeleccionadoL != null && fondoSeleccionado != null) {
+            if (personajeSeleccionado != null && fondoSeleccionado != null) {
                  // Crear una instancia de la clase Personaje y pasarle los parámetros
-                Personaje jugador = new Personaje(personajeSeleccionadoL, personajeSeleccionadoR, fondoSeleccionado);
+                Personaje jugador = new Personaje(personajeSeleccionado, fondoSeleccionado);
 
                 // Configurar la ventana del juego con el personaje
                 JFrame ventanaJuego = new JFrame("DOODLE JUMP - Juego");
