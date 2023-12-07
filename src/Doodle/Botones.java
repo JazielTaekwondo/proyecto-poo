@@ -12,7 +12,7 @@ public class Botones extends JFrame implements ActionListener {
     Musica M = new Musica();
 
     public Botones(){
-        super("DOODLE JUMP");
+        super("DOODLE JUMP-Menu");
         setLayout(null);
 
         inicio = new JButton();
@@ -53,7 +53,7 @@ public class Botones extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e){
         if(e.getSource()==inicio){
-            Seleccion a = new Seleccion();
+            Seleccion a = new Seleccion(this); // Pasa la referencia de la ventana actual
             a.setBounds(0, 0, 600, 800);
             a.setResizable(false);
             a.setLocationRelativeTo(null);
@@ -81,9 +81,13 @@ class Seleccion extends JFrame implements ActionListener {
     JButton menu;
     Musica M = new Musica();
 
-    public Seleccion(){
-        super("DOODLE JUMP");
+    private JFrame ventanaAnterior;
+
+    public Seleccion(JFrame ventanaAnterior){
+        super("DOODLE JUMP-Seleccion");
         setLayout(null);
+
+        this.ventanaAnterior = ventanaAnterior;
 
         personaje1 = new JButton();
         personaje2 = new JButton();
@@ -145,12 +149,21 @@ class Seleccion extends JFrame implements ActionListener {
         Image iconImage = icon.getImage();
         setIconImage(iconImage);
 
-        JLabel texto1 = new JLabel("MAPAS");
-        texto1.setBounds(285, 150, 400, 140); 
-        JLabel texto2 = new JLabel("PERSONAJES");
-        texto2.setBounds(265, 350, 400, 140); 
+        // Crear una fuente personalizada (puedes ajustar el estilo y el tamaño según tus preferencias)
+        Font fuente = new Font("Century Gothic", Font.ITALIC+Font.BOLD, 28);
+
+        // Crear los JLabels con el texto y la fuente personalizada
+        JLabel texto1 = new JLabel("M A P A S");
+        texto1.setBounds(240, 130, 400, 140);
+        texto1.setFont(fuente);
         texto1.setForeground(Color.WHITE);
+
+        JLabel texto2 = new JLabel("P E R S O N A J E S");
+        texto2.setBounds(180, 330, 400, 140);
+        texto2.setFont(fuente);
         texto2.setForeground(Color.WHITE);
+
+        // Añadir los JLabels al contenedor
         add(texto1);
         add(texto2);
 
@@ -233,13 +246,16 @@ class Seleccion extends JFrame implements ActionListener {
                 // Ocultar la ventana de selección
                 this.setVisible(false);
             } else {
-                // Mensaje de advertencia si no se han seleccionado ambos
-                JOptionPane.showMessageDialog(this, "Por favor, selecciona un personaje y un fondo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+    // Mensaje de advertencia si no se han seleccionado ambos
+                String mensaje = "<html><body style='width: 200px; text-align: center;'><p style='font-size: 14px; color: blue;'><b>Por favor, selecciona un personaje y un fondo.</b></p></body></html>";
+                JOptionPane.showMessageDialog(this, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
         } else if (e.getSource() == menu) {
             // Lógica para el botón de menu
-            // ...
+            M.reproducirSonido("/sounds/jump.wav");
+            // Mostrar la ventana anterior y ocultar la actual
+            ventanaAnterior.setVisible(true);
+            this.setVisible(false);
         }
-        // ... (otras acciones)
     }
 }
