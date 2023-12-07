@@ -3,11 +3,9 @@ package Doodle;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
-import javax.sound.sampled.*;
 
 //import java.util.Random;
 
@@ -15,7 +13,7 @@ public class Personaje extends JPanel implements ActionListener {
     private double x;
     private double y;
     private final double height = 60;
-    private final double width = 60;
+    private final double width = 40;
 
     private double velocity = 1.0;
     private final double gravity = 0.2;
@@ -29,27 +27,32 @@ public class Personaje extends JPanel implements ActionListener {
     private List<Plataforma> plataformas = new ArrayList<>();
     private int no_plataformas = 0;
 
-    private String personajeSeleccionado;
+    private String personajeSeleccionadoL;
+    private String personajeSeleccionadoR;
     private String fondoSeleccionado;
+    private boolean mirandoizquierda = false;
+
+    private Musica M = new Musica();
 
     private int translateY = 0;
     private Random random = new Random();
 
     private JLabel scoreLabel;
     private int puntuacion = 0;
-    private PlataformaPlus impulso;
     
     private Timer timer;
 
-    public Personaje(String personajeSeleccionado, String fondoSeleccionado) {
-        this.personajeSeleccionado = personajeSeleccionado;
+    public Personaje(String personajeSeleccionadoL, String personajeSeleccionadoR, String fondoSeleccionado) {
+        this.personajeSeleccionadoL = personajeSeleccionadoL;
+        this.personajeSeleccionadoR = personajeSeleccionadoR;
         this.fondoSeleccionado = fondoSeleccionado;
         x = 200;
         y = 500; // Establecer la posición inicial en la parte inferior del panel
 
         Timer timer = new Timer(16, this); // 16ms para aprox. 60fps
         timer.start();
-        impulso = new PlataformaPlus(random.nextInt(401), -1);
+
+        M.ReproducirMusic("/sounds/Zelda.wav");
         //generatePlatforms();
         plataformas.add(new Plataforma(200,450));
         plataformas.add(new Plataforma(400,300));
@@ -97,19 +100,29 @@ public class Personaje extends JPanel implements ActionListener {
             //plataformasInfinitas();
         }
         
+        /*if (!isJumping && y <= 150) {
+            velocity += 100;
+            y += velocity;
+            //if (y > 150){
+              //  isJumping = false;
+            //}
+        }*/
+        
         if (!isJumping) { // salto
                 jump();
-                reproducirSalto();
+                M.reproducirSonido("/sounds/jump.wav");
                 solido = false;
         }
 
         if (moveLeft) {
+            mirandoizquierda = true; // Establecer la dirección a izquierda
             x -= 4;
             if (x + width < 0) {
                 x = getWidth();
             }
         }
         if (moveRight) {
+            mirandoizquierda = false; // Establecer la dirección a derecha
             x += 4;
             if (x > getWidth()) {
                 x = -width;
@@ -118,7 +131,7 @@ public class Personaje extends JPanel implements ActionListener {
 
         if (y > 750) {
             // Si la posición en y supera 700, detener el juego y mostrar un mensaje
-            reproducirSonidoPierde();
+            M.reproducirSonido("/sounds/pada.wav");
             JOptionPane.showMessageDialog(this, "¡Has perdido!\nPuntuación: " + getPuntuacion());
             
             System.exit(0); // Salir del juego
@@ -144,26 +157,31 @@ public class Personaje extends JPanel implements ActionListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-
+    
         // Cargar la imagen de fondo
         ImageIcon fondoIcon = new ImageIcon(getClass().getResource(fondoSeleccionado));
         Image fondoImage = fondoIcon.getImage();
-
+    
         // Dibujar la imagen de fondo
         g2d.drawImage(fondoImage, 0, 0, getWidth(), getHeight(), this);
-
-        // Cargar la imagen del personaje
-        ImageIcon personajeIcon = new ImageIcon(getClass().getResource(personajeSeleccionado));
-        Image personajeImage = personajeIcon.getImage();
-
+    
+        // Seleccionar la imagen del personaje basándote en la dirección
+        Image personajeImage;
+        if (mirandoizquierda) {
+            ImageIcon personajeIconL = new ImageIcon(getClass().getResource(personajeSeleccionadoL));
+            personajeImage = personajeIconL.getImage();
+        } else {
+            ImageIcon personajeIconR = new ImageIcon(getClass().getResource(personajeSeleccionadoR));
+            personajeImage = personajeIconR.getImage();
+        }
+    
         // Dibujar la imagen del personaje
         g2d.drawImage(personajeImage, (int) x, (int) y, (int) width, (int) height, this);
-
+    
         // Dibujar las plataformas
         for (Plataforma plataforma : plataformas) {
             plataforma.draw(g2d);
         }
-        impulso.draw(g2d);
     }
 
     private void jump() {
@@ -171,6 +189,14 @@ public class Personaje extends JPanel implements ActionListener {
         isJumping = true;
         puntuacion++; // Incrementar la puntuación al saltar
         updateScoreLabel(); // Actualizar el texto del label
+        /*if (isJumping) {
+            velocity += gravity;
+            y += velocity;
+            if (y < 0) { 
+                y = 0;
+                velocity = 0;
+            }
+        }*/
     }
 
     public void colisionConPlataforma() {
@@ -186,23 +212,10 @@ public class Personaje extends JPanel implements ActionListener {
                 }
                 velocity = 0;
                 jump();
-                desplazar(350);
+                desplazar(350,30);
                 isJumping = false;
             }
         }
-        if (x < impulso.getX() + impulso.getWidth() &&
-                x + width > impulso.getX() &&
-                y < impulso.getY() + impulso.getHeight() &&
-                y + height > impulso.getY() &&            
-                velocity>=0 && y > 100 && solido) 
-            {   
-                if(y+height <=500){
-                }
-                velocity = 0;
-                jump();
-                desplazar(1000);
-                isJumping = false;
-            }
         plataformasInfinitas();
     }
 
@@ -213,15 +226,11 @@ public class Personaje extends JPanel implements ActionListener {
             plataformas.add(new Plataforma(random.nextInt(401), -100*i));
             no_plataformas++;
         }
-        if(impulso.getEnPantalla()==false){
-            impulso.setX(random.nextInt(401));
-            impulso.setY(-1000);
-        }
     }
 
-    private boolean desplazar(int totalTranslateY) {
+    private boolean desplazar(int totalTranslateY, int totalTranslateX) {
 
-        final int incremento = 15;
+        final int incremento = 10;
         
         // Detenemos el temporizador previo si existe
         if (timer != null && timer.isRunning()) {
@@ -233,10 +242,9 @@ public class Personaje extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 if (isJumping) {
                     for (Plataforma plataforma : plataformas) {
-                        plataforma.setY(plataforma.getY() + incremento);
+                        plataforma.setT(plataforma.getY() + incremento);
                     }
                 }
-                impulso.setY(impulso.getY()+incremento);
                 translateY += incremento;
     
                 if (translateY >= totalTranslateY) {
@@ -257,6 +265,8 @@ public class Personaje extends JPanel implements ActionListener {
     private void updateScoreLabel() {
         scoreLabel.setText("Puntuación: " + getPuntuacion());
     }
+
+    /* 
 
     private void reproducirSalto() {
         try {
@@ -285,4 +295,5 @@ public class Personaje extends JPanel implements ActionListener {
             e.printStackTrace();
         }
     }
+    */
 }
