@@ -1,5 +1,3 @@
-//package Doodle;
-
 import Doodle.*;
 
 public class Doodle {

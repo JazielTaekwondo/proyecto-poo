@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
 
-//import java.util.Random;
-
 public class Personaje extends JPanel implements ActionListener {
     private double x;
     private double y;
@@ -99,33 +97,24 @@ public class Personaje extends JPanel implements ActionListener {
             velocity += gravity;
             y += velocity;
             solido = true;
-            //plataformasInfinitas();
         }
         
-        /*if (!isJumping && y <= 150) {
-            velocity += 100;
-            y += velocity;
-            //if (y > 150){
-              //  isJumping = false;
-            //}
-        }*/
-        
         if (!isJumping) { // salto
-                jump();
-                M.reproducirSonido("/sounds/jump.wav");
-                solido = false;
+            jump();
+            M.reproducirSonido("/sounds/jump.wav");
+            solido = false;
         }
 
         if (moveLeft) {
             mirandoizquierda = true; // Establecer la dirección a izquierda
-            x -= 4;
+            x -= 5;
             if (x + width < 0) {
                 x = getWidth();
             }
         }
         if (moveRight) {
             mirandoizquierda = false; // Establecer la dirección a derecha
-            x += 4;
+            x += 5;
             if (x > getWidth()) {
                 x = -width;
             }
@@ -195,7 +184,6 @@ public class Personaje extends JPanel implements ActionListener {
    private void jump() {
         velocity = jumpForce;
         isJumping = true;
-        puntuacion++; // Incrementar la puntuación al saltar
         updateScoreLabel(); // Actualizar el texto del label
     }
     private void jumpPlus() {
@@ -218,6 +206,7 @@ public class Personaje extends JPanel implements ActionListener {
                 }
                 velocity = 0;
                 jump();
+                puntuacion++; // Incrementar la puntuación al saltar
                 desplazar(300);
                 isJumping = false;
             }
