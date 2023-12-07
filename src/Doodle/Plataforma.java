@@ -2,6 +2,8 @@ package Doodle;
 
 import java.awt.*;
 
+import javax.swing.JFrame;
+
 public class Plataforma {
     private int x;
     private int y;

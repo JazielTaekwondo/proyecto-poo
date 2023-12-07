@@ -16,13 +16,18 @@ public class Personaje extends JPanel implements ActionListener {
 
     private double velocity = 1.0;
     private final double gravity = 0.2;
-    private final double jumpForce = -9; // Agregamos la fuerza de salto
+    private final double jumpForce = -6.5; // Agregamos la fuerza de salto
 
     private boolean isJumping = false;
     private boolean moveLeft = false;
     private boolean moveRight = false;
+    private boolean solido = false;
 
     private List<Plataforma> plataformas = new ArrayList<>();
+    private int no_plataformas = 0;
+
+    private String personajeSeleccionado;
+    private String fondoSeleccionado;
 
     /* 
     private final int platformCount = 10;
@@ -34,9 +39,14 @@ public class Personaje extends JPanel implements ActionListener {
     private int translateY = 0;
     private Random random = new Random();
 
-private Timer timer;
+    private JLabel scoreLabel;
+    private int puntuacion = 0;
+    
+    private Timer timer;
 
-    public Personaje() {
+    public Personaje(String personajeSeleccionado, String fondoSeleccionado) {
+        this.personajeSeleccionado = personajeSeleccionado;
+        this.fondoSeleccionado = fondoSeleccionado;
         x = 200;
         y = 500; // Establecer la posición inicial en la parte inferior del panel
 
@@ -44,10 +54,11 @@ private Timer timer;
         timer.start();
 
         //generatePlatforms();
-        plataformas.add(new Plataforma(100,500));
-        plataformas.add(new Plataforma(400,700));
-        plataformas.add(new Plataforma(200,400));
-        plataformas.add(new Plataforma(150,200));
+        plataformas.add(new Plataforma(200,450));
+        plataformas.add(new Plataforma(400,300));
+        plataformas.add(new Plataforma(200,200));
+        plataformas.add(new Plataforma(150,100));
+        //no_plataformas+=5;
 
         setFocusable(true); // Permitir que el panel sea focuseable para las teclas
         addKeyListener(new KeyAdapter() {
@@ -70,6 +81,13 @@ private Timer timer;
                 }
             }
         });
+
+        scoreLabel = new JLabel("Puntuación: 0");
+        scoreLabel.setForeground(Color.WHITE); // Color del texto
+        scoreLabel.setBounds(10, 10, 150, 30); // Posición y tamaño del label
+        add(scoreLabel); // Agrega el label al panel
+
+        updateScoreLabel();
     }
 
     @Override
@@ -78,20 +96,21 @@ private Timer timer;
         if (isJumping) {
             velocity += gravity;
             y += velocity;
-
+            solido = true;
             //plataformasInfinitas();
         }
         
-        if (!isJumping) {
-            //PlataformasEnPanatalla-=10;
-            //plataformasInfinitas();
-
-            //plataformasInfinitas();
-        }
+        /*if (!isJumping && y <= 150) {
+            velocity += 100;
+            y += velocity;
+            //if (y > 150){
+              //  isJumping = false;
+            //}
+        }*/
         
-        if (!isJumping) {
-            //plataformasInfinitas();
-            jump();
+        if (!isJumping) { // salto
+                jump();
+                solido = false;
         }
 
         if (moveLeft) {
@@ -107,24 +126,27 @@ private Timer timer;
             }
         }
 
-        colisionConPlataforma();
+        if (y > 700) {
+            // Si la posición en y supera 700, detener el juego y mostrar un mensaje
+            JOptionPane.showMessageDialog(this, "¡Has perdido!\nPuntuación: " + getPuntuacion());
+            
+            System.exit(0); // Salir del juego
+        }
+
+            colisionConPlataforma();
 
         repaint();
     }
 
-
-    /** 
-    private void plataformasInfinitas(){
-        Random random = new Random();
+    private void eliminar(){
         for (int i = 0; i< plataformas.size(); i++) {
             if(plataformas.get(i).getEnPantalla()==false){
                 plataformas.remove(i);
                 i--;
-                plataformas.add(new Plataforma((int)(100*(random.nextDouble()*4.0)), (int)(-100*(random.nextDouble()*10.0))));
+                no_plataformas--;
             }
         }
     }
-    */
     
 
     @Override
@@ -132,67 +154,67 @@ private Timer timer;
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.setColor(Color.BLUE);
-        g2d.fillRect(0, 0, getWidth(), getHeight());
+        // Cargar la imagen de fondo
+        ImageIcon fondoIcon = new ImageIcon(getClass().getResource(fondoSeleccionado));
+        Image fondoImage = fondoIcon.getImage();
 
-        g2d.setColor(Color.BLACK);
-        g2d.fillRect((int) x, (int) y, (int) width, (int) height);
+        // Dibujar la imagen de fondo
+        g2d.drawImage(fondoImage, 0, 0, getWidth(), getHeight(), this);
 
+        // Cargar la imagen del personaje
+        ImageIcon personajeIcon = new ImageIcon(getClass().getResource(personajeSeleccionado));
+        Image personajeImage = personajeIcon.getImage();
+
+        // Dibujar la imagen del personaje
+        g2d.drawImage(personajeImage, (int) x, (int) y, (int) width, (int) height, this);
+
+        // Dibujar las plataformas
         for (Plataforma plataforma : plataformas) {
             plataforma.draw(g2d);
         }
     }
 
-    /* 
-    private void generatePlatforms() {
-        Random random = new Random();
-        double initialY = (y) + height; // Ajustamos la posición inicial de las plataformas
-
-        plataformas.add(new Plataforma(300, (int)initialY));
-        for (int i = 0; i <= 20; i++) {
-            plataformas.add(new Plataforma((int)(100*(random.nextDouble()*6.0+1)), (int)(100*(random.nextDouble()*16.0-8.0))));
-
-        }
-    }
-    */
-
     private void jump() {
         velocity = jumpForce;
         isJumping = true;
-        if (isJumping) {
+        puntuacion++; // Incrementar la puntuación al saltar
+        updateScoreLabel(); // Actualizar el texto del label
+        /*if (isJumping) {
             velocity += gravity;
             y += velocity;
-            if (y < 250) { 
-                y = 250;
+            if (y < 0) { 
+                y = 0;
                 velocity = 0;
             }
-        }
+        }*/
     }
 
     public void colisionConPlataforma() {
-        boolean move = false;
+        //boolean move = false;
         for (Plataforma plataforma : plataformas) {
             if (x < plataforma.getX() + plataforma.getWidth() &&
                 x + width > plataforma.getX() &&
                 y < plataforma.getY() + plataforma.getHeight() &&
                 y + height > plataforma.getY() &&            
-                velocity>=0) 
+                velocity>=0 && y > 100 && solido) 
             {   
                 if(y+height <=500){
-
-                    move = desplazar(300,30);
-
-                    desplazar(300,30);
-
                 }
                 velocity = 0;
                 jump();
+                desplazar(350,30);
                 isJumping = false;
             }
         }
-        if(move){
-            plataformas.add(new Plataforma(random.nextInt(401),0));
-            move=!move;
+        plataformasInfinitas();
+    }
+
+    private void plataformasInfinitas(){
+        eliminar();
+        int total = 9-no_plataformas;
+        for (int i = 0; i < total; i++) { // Generar plataformas en diferentes alturas
+            plataformas.add(new Plataforma(random.nextInt(401), -100*i));
+            no_plataformas++;
         }
     }
 
@@ -225,15 +247,12 @@ private Timer timer;
 
         return true;
     }
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Doodler Game with Swing");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(500, 800);
-            frame.add(new Personaje());
-            frame.setVisible(true);
-            frame.setLocationRelativeTo(null);
 
-        });
+    public int getPuntuacion() {
+        return puntuacion;
+    }
+
+    private void updateScoreLabel() {
+        scoreLabel.setText("Puntuación: " + getPuntuacion());
     }
 }

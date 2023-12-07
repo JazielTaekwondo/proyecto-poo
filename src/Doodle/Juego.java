@@ -7,6 +7,8 @@ public class Juego extends JFrame {
     private JLayeredPane layeredPane;
     private JLabel labelFondo;
     private JLabel labelPersonaje;
+    private Personaje jugador;
+    
 
     public Juego(String fondoSeleccionado, String personajeSeleccionado) {
         super("DOODLE JUMP - Juego");
@@ -20,6 +22,7 @@ public class Juego extends JFrame {
     }
 
     public void configurarInterfaz(String fondoSeleccionado, String personajeSeleccionado) {
+
         layeredPane = new JLayeredPane();
         layeredPane.setBounds(0, 0, 600, 800); 
         setContentPane(layeredPane);
@@ -41,4 +44,3 @@ public class Juego extends JFrame {
         // repaint();
     }
 }
-
