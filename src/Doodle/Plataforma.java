@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
 public class Plataforma {
     private int x;
     private int y;
-    private final int height = 15;
+    private final int height = 20;
     private final int width = 60;
     private boolean enPantalla;
 
