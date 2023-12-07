@@ -3,11 +3,9 @@ package Doodle;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
-import javax.sound.sampled.*;
 
 //import java.util.Random;
 
@@ -34,12 +32,7 @@ public class Personaje extends JPanel implements ActionListener {
     private String fondoSeleccionado;
     private boolean mirandoizquierda = false;
 
-    /* 
-    private final int platformCount = 10;
-    private int PlataformasEnPanatalla = 0;
-    private double gap;
-    private boolean start = true;
-    */
+    private Musica M = new Musica();
 
     private int translateY = 0;
     private Random random = new Random();
@@ -59,6 +52,7 @@ public class Personaje extends JPanel implements ActionListener {
         Timer timer = new Timer(16, this); // 16ms para aprox. 60fps
         timer.start();
 
+        M.ReproducirMusic("/sounds/Zelda.wav");
         //generatePlatforms();
         plataformas.add(new Plataforma(200,450));
         plataformas.add(new Plataforma(400,300));
@@ -116,7 +110,7 @@ public class Personaje extends JPanel implements ActionListener {
         
         if (!isJumping) { // salto
                 jump();
-                reproducirSalto();
+                M.reproducirSonido("/sounds/jump.wav");
                 solido = false;
         }
 
@@ -137,7 +131,7 @@ public class Personaje extends JPanel implements ActionListener {
 
         if (y > 750) {
             // Si la posición en y supera 700, detener el juego y mostrar un mensaje
-            reproducirSonidoPierde();
+            M.reproducirSonido("/sounds/pada.wav");
             JOptionPane.showMessageDialog(this, "¡Has perdido!\nPuntuación: " + getPuntuacion());
             
             System.exit(0); // Salir del juego
@@ -272,6 +266,8 @@ public class Personaje extends JPanel implements ActionListener {
         scoreLabel.setText("Puntuación: " + getPuntuacion());
     }
 
+    /* 
+
     private void reproducirSalto() {
         try {
             // Cargar el archivo de sonido
@@ -299,4 +295,5 @@ public class Personaje extends JPanel implements ActionListener {
             e.printStackTrace();
         }
     }
+    */
 }

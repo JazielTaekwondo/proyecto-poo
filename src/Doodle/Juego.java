@@ -7,8 +7,6 @@ public class Juego extends JFrame {
     private JLayeredPane layeredPane;
     private JLabel labelFondo;
     private JLabel labelPersonaje;
-    private Personaje jugador;
-    
 
     public Juego(String fondoSeleccionado, String personajeSeleccionado) {
         super("DOODLE JUMP - Juego");

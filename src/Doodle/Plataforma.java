@@ -6,8 +6,6 @@ import javax.swing.ImageIcon;
 
 //import javax.swing.JFrame;
 
-
-
 public class Plataforma {
     private int x;
     private int y;

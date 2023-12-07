@@ -9,6 +9,7 @@ public class Botones extends JFrame implements ActionListener {
 
     JButton inicio;
     JButton salir;
+    Musica M = new Musica();
 
     public Botones(){
         super("DOODLE JUMP");
@@ -16,6 +17,8 @@ public class Botones extends JFrame implements ActionListener {
 
         inicio = new JButton();
         salir = new JButton();
+
+        M.ReproducirMusic("/sounds/MusicMario.wav");
 
         ImageIcon fotoBoton = new ImageIcon(getClass().getResource("/images/BotonInicio.png"));
         ImageIcon fotoBoton2 = new ImageIcon(getClass().getResource("/images/BotonSalida.png"));
@@ -57,8 +60,10 @@ public class Botones extends JFrame implements ActionListener {
             a.setVisible(true);
             //mostrarSeleccionVentana();
             this.setVisible(false);
+            M.reproducirSonido("/sounds/jump.wav");
         }
         if (e.getSource() == salir) {
+            M.reproducirSonido("/sounds/pada.wav");
             System.exit(0);
         }
     }
@@ -74,6 +79,7 @@ class Seleccion extends JFrame implements ActionListener {
     JButton fondo3;
     JButton play;
     JButton menu;
+    Musica M = new Musica();
 
     public Seleccion(){
         super("DOODLE JUMP");
@@ -170,41 +176,49 @@ class Seleccion extends JFrame implements ActionListener {
             // Lógica para el botón del personaje1
             personajeSeleccionadoL = "/images/BadSmilyL.png"; // Reemplazar con la lógica real
             personajeSeleccionadoR = "/images/BadSmilyR.png";
+            M.reproducirSonido("/sounds/jump.wav");
             //System.out.println("Personaje seleccionado: " + personajeSeleccionado);
         }
         if (e.getSource() == personaje2) {
             // Lógica para el botón del personaje2
             personajeSeleccionadoL = "/images/SmilyL.png"; // Reemplazar con la lógica real
             personajeSeleccionadoR = "/images/SmilyR.png";
+            M.reproducirSonido("/sounds/jump.wav");
             //System.out.println("Personaje seleccionado: " + personajeSeleccionado);
         }
         if (e.getSource() == personaje3) {
             // Lógica para el botón del personaje3
             personajeSeleccionadoL = "/images/PunkSmilyL.png"; // Reemplazar con la lógica real
             personajeSeleccionadoR = "/images/PunkSmilyR.png"; // Reemplazar con la lógica real
+            M.reproducirSonido("/sounds/jump.wav");
             //System.out.println("Personaje seleccionado: " + personajeSeleccionado);
         }
         if (e.getSource() == fondo1) {
             // Lógica para el botón del fondo1
             fondoSeleccionado = "/images/fondo.png"; // Reemplazar con la lógica real
+            M.reproducirSonido("/sounds/jump.wav");
             //System.out.println("Fondo seleccionado: " + fondoSeleccionado);
         }
         if (e.getSource() == fondo2) {
             // Lógica para el botón del fondo2
             fondoSeleccionado = "/images/fondo2.jpg"; // Reemplazar con la lógica real
+            M.reproducirSonido("/sounds/jump.wav");
             //System.out.println("Fondo seleccionado: " + fondoSeleccionado);
         }
         if (e.getSource() == fondo3) {
             // Lógica para el botón del fondo3
             fondoSeleccionado = "/images/fondo3.png"; // Reemplazar con la lógica real
+            M.reproducirSonido("/sounds/jump.wav");
            // System.out.println("Fondo seleccionado: " + fondoSeleccionado);
         }
         if (e.getSource() == play) {
+            M.reproducirSonido("/sounds/jump.wav");
             // Lógica para el botón de play
             //System.out.println("Botón Play presionado");
             
             // Verificar que se hayan seleccionado un personaje y un fondo
             if (personajeSeleccionadoL != null && fondoSeleccionado != null) {
+                M.StopMusic();
                  // Crear una instancia de la clase Personaje y pasarle los parámetros
                 Personaje jugador = new Personaje(personajeSeleccionadoL, personajeSeleccionadoR, fondoSeleccionado);
 
