@@ -29,8 +29,10 @@ public class Personaje extends JPanel implements ActionListener {
     private List<Plataforma> plataformas = new ArrayList<>();
     private int no_plataformas = 0;
 
-    private String personajeSeleccionado;
+    private String personajeSeleccionadoL;
+    private String personajeSeleccionadoR;
     private String fondoSeleccionado;
+    private boolean mirandoizquierda = false;
 
     /* 
     private final int platformCount = 10;
@@ -47,8 +49,9 @@ public class Personaje extends JPanel implements ActionListener {
     
     private Timer timer;
 
-    public Personaje(String personajeSeleccionado, String fondoSeleccionado) {
-        this.personajeSeleccionado = personajeSeleccionado;
+    public Personaje(String personajeSeleccionadoL, String personajeSeleccionadoR, String fondoSeleccionado) {
+        this.personajeSeleccionadoL = personajeSeleccionadoL;
+        this.personajeSeleccionadoR = personajeSeleccionadoR;
         this.fondoSeleccionado = fondoSeleccionado;
         x = 200;
         y = 500; // Establecer la posición inicial en la parte inferior del panel
@@ -118,12 +121,14 @@ public class Personaje extends JPanel implements ActionListener {
         }
 
         if (moveLeft) {
+            mirandoizquierda = true; // Establecer la dirección a izquierda
             x -= 4;
             if (x + width < 0) {
                 x = getWidth();
             }
         }
         if (moveRight) {
+            mirandoizquierda = false; // Establecer la dirección a derecha
             x += 4;
             if (x > getWidth()) {
                 x = -width;
@@ -158,21 +163,27 @@ public class Personaje extends JPanel implements ActionListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-
+    
         // Cargar la imagen de fondo
         ImageIcon fondoIcon = new ImageIcon(getClass().getResource(fondoSeleccionado));
         Image fondoImage = fondoIcon.getImage();
-
+    
         // Dibujar la imagen de fondo
         g2d.drawImage(fondoImage, 0, 0, getWidth(), getHeight(), this);
-
-        // Cargar la imagen del personaje
-        ImageIcon personajeIcon = new ImageIcon(getClass().getResource(personajeSeleccionado));
-        Image personajeImage = personajeIcon.getImage();
-
+    
+        // Seleccionar la imagen del personaje basándote en la dirección
+        Image personajeImage;
+        if (mirandoizquierda) {
+            ImageIcon personajeIconL = new ImageIcon(getClass().getResource(personajeSeleccionadoL));
+            personajeImage = personajeIconL.getImage();
+        } else {
+            ImageIcon personajeIconR = new ImageIcon(getClass().getResource(personajeSeleccionadoR));
+            personajeImage = personajeIconR.getImage();
+        }
+    
         // Dibujar la imagen del personaje
         g2d.drawImage(personajeImage, (int) x, (int) y, (int) width, (int) height, this);
-
+    
         // Dibujar las plataformas
         for (Plataforma plataforma : plataformas) {
             plataforma.draw(g2d);
