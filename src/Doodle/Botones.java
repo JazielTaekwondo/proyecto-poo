@@ -201,10 +201,17 @@ class Seleccion extends JFrame implements ActionListener {
             
             // Verificar que se hayan seleccionado un personaje y un fondo
             if (personajeSeleccionado != null && fondoSeleccionado != null) {
-                System.out.println("Creando instancia de Juego con fondo: " + fondoSeleccionado + " y personaje: " + personajeSeleccionado);
-                // Crear una instancia de la clase Juego y pasarle los parámetros
-                Juego juego = new Juego(fondoSeleccionado, personajeSeleccionado);
-                
+                 // Crear una instancia de la clase Personaje y pasarle los parámetros
+                Personaje jugador = new Personaje(personajeSeleccionado, fondoSeleccionado);
+
+                // Configurar la ventana del juego con el personaje
+                JFrame ventanaJuego = new JFrame("DOODLE JUMP - Juego");
+                ventanaJuego.add(jugador);  // Agregar el panel del personaje a la ventana
+                ventanaJuego.setSize(600, 800);
+                ventanaJuego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                ventanaJuego.setLocationRelativeTo(null);
+                ventanaJuego.setVisible(true);
+
                 // Ocultar la ventana de selección
                 this.setVisible(false);
             } else {

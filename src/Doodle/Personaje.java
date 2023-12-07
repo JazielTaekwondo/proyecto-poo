@@ -26,6 +26,9 @@ public class Personaje extends JPanel implements ActionListener {
     private List<Plataforma> plataformas = new ArrayList<>();
     private int no_plataformas = 0;
 
+    private String personajeSeleccionado;
+    private String fondoSeleccionado;
+
     /* 
     private final int platformCount = 10;
     private int PlataformasEnPanatalla = 0;
@@ -39,9 +42,11 @@ public class Personaje extends JPanel implements ActionListener {
     private JLabel scoreLabel;
     private int puntuacion = 0;
 
-private Timer timer;
+    private Timer timer;
 
-    public Personaje() {
+    public Personaje(String personajeSeleccionado, String fondoSeleccionado) {
+        this.personajeSeleccionado = personajeSeleccionado;
+        this.fondoSeleccionado = fondoSeleccionado;
         x = 200;
         y = 500; // Establecer la posición inicial en la parte inferior del panel
 
@@ -149,12 +154,21 @@ private Timer timer;
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.setColor(Color.BLUE);
-        g2d.fillRect(0, 0, getWidth(), getHeight());
+        // Cargar la imagen de fondo
+        ImageIcon fondoIcon = new ImageIcon(getClass().getResource(fondoSeleccionado));
+        Image fondoImage = fondoIcon.getImage();
 
-        g2d.setColor(Color.BLACK);
-        g2d.fillRect((int) x, (int) y, (int) width, (int) height);
+        // Dibujar la imagen de fondo
+        g2d.drawImage(fondoImage, 0, 0, getWidth(), getHeight(), this);
 
+        // Cargar la imagen del personaje
+        ImageIcon personajeIcon = new ImageIcon(getClass().getResource(personajeSeleccionado));
+        Image personajeImage = personajeIcon.getImage();
+
+        // Dibujar la imagen del personaje
+        g2d.drawImage(personajeImage, (int) x, (int) y, (int) width, (int) height, this);
+
+        // Dibujar las plataformas
         for (Plataforma plataforma : plataformas) {
             plataforma.draw(g2d);
         }
@@ -240,17 +254,5 @@ private Timer timer;
 
     private void updateScoreLabel() {
         scoreLabel.setText("Puntuación: " + getPuntuacion());
-    }
-    
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Doodler Game with Swing");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(500, 800);
-            frame.add(new Personaje());
-            frame.setVisible(true);
-            frame.setLocationRelativeTo(null);
-
-        });
     }
 }
