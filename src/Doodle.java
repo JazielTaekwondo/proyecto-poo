@@ -1,4 +1,6 @@
-package Doodle;
+//package Doodle;
+
+import Doodle.*;
 
 public class Doodle {
     public static void main(String[] args) {
