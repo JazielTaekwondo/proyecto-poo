@@ -1,8 +1,10 @@
 package Doodle;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
@@ -43,6 +45,7 @@ public class Personaje extends JPanel implements ActionListener {
     private int puntuacion = 0;
     
     private Timer timer;
+    private Clip clip;
 
     public Personaje(String personajeSeleccionado, String fondoSeleccionado) {
         this.personajeSeleccionado = personajeSeleccionado;
@@ -187,6 +190,7 @@ public class Personaje extends JPanel implements ActionListener {
                 velocity = 0;
             }
         }*/
+        sonar("bin\\sounds\\jump.wav");
     }
 
     public void colisionConPlataforma() {
@@ -254,5 +258,16 @@ public class Personaje extends JPanel implements ActionListener {
 
     private void updateScoreLabel() {
         scoreLabel.setText("Puntuación: " + getPuntuacion());
+    }
+
+    private void sonar(String archivo) {
+        try {
+            clip = AudioSystem.getClip();
+            AudioInputStream sonido = AudioSystem.getAudioInputStream(new File(archivo));
+            clip.open(sonido);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
